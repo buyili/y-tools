@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+</head>
+<body>
+
+<!--<input type="input" id="uri" value="wss://api.huobi.pro/feed">-->
+<input type="input" id="uri" value="wss://api.huobi.pro/feed">
+<button id="btnConnect" onclick="connect()">连接</button>
+<div></div>
+<textarea id="output" rows="50" style="width: 100%;"></textarea>
+
+
+<script>
+
+function connect(){
+  let uriEl = document.getElementById('uri')
+  console.log(uriEl.value)
+  if(!uriEl.value){
+    window.alert("请输入ws链接地址")
+  }
+  document.getElementById('output').value = '';
+
+  function alert(str){
+    let elementById = document.getElementById('output')
+    elementById.value = `${elementById.value}\n ${str}`
+  }
+
+
+
+
+  // let socket = new WebSocket("wss://javascript.info/article/websocket/demo/hello");
+  let socket = new WebSocket(uriEl.value);
+
+  socket.onopen = function(e) {
+    alert("[open] Connection established");
+    alert("Sending to server");
+    // let sendData = '{"sub":"market.btcusdt.kline.1min","id":"id1"}'
+    let sendData = '{\n' +
+      '  "sub": "market.btcusdt.mbp.5",\n' +
+      '  "id": "id1"\n' +
+      '}'
+    alert(sendData)
+    socket.send(sendData);
+  };
+
+  socket.onmessage = function(event) {
+    //判断是否为Blob格式的数据
+    console.log(event.data, event.data instanceof Blob)
+    if (event.data instanceof Blob) {
+      var blob = event.data;
+      let reader = new FileReader();
+      reader.readAsArrayBuffer(event.data, "utf-8");
+      reader.onload = function () {
+
+
+        console.log("blob转ArrayBuffer数据类型", reader.result);
+        // 对数据进行解压
+        let msg = pako.ungzip(reader.result, {
+          to: "string"
+        });
+        console.log("ArrayBuffer转字符串", msg);
+        // global_callback(JSON.parse(msg));
+        alert(`[message] Data received from server: ${msg}`);
+      }
+    } else {
+      alert(`[message] Data received from server: ${event.data}`);
+    }
+  };
+
+  socket.onclose = function(event) {
+    if (event.wasClean) {
+      alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+    } else {
+      // 例如服务器进程被杀死或网络中断
+      // 在这种情况下，event.code 通常为 1006
+      alert('[close] Connection died');
+    }
+  };
+
+  socket.onerror = function(error) {
+    alert(`[error] ${error.message}`);
+  };
+
+}
+</script>
+</body>
+</html>
