@@ -5,6 +5,8 @@
         <a-space>
           <a-input type="text" v-model:value="uri" @keypress.enter.stop="connect"></a-input>
           <a-button @click="connect">连接</a-button>
+          <a-button @click="close">断开</a-button>
+          <a-button @click="cleanAll">清空</a-button>
         </a-space>
       </a-row>
 
@@ -25,7 +27,8 @@
     </a-row>
     </a-space>
     <div style="text-align: left;margin-left: 20px;">
-      <h3>示例</h3>
+      <h2>示例</h2>
+      <h3>火币示例</h3>
       <pre>
 <my-clipboard-span value="wss://api.huobi.pro/feed"></my-clipboard-span>
 
@@ -34,6 +37,15 @@
   "sub": "market.btcusdt.mbp.5",
   "id": "id1"
 }'></my-clipboard-span>
+
+
+      </pre>
+      <h3>本地示例</h3>
+      <pre>
+<my-clipboard-span value="ws://localhost:28080"></my-clipboard-span>
+
+连接后发送任意消息，服务端会原样返回。比如：
+<my-clipboard-span value='你好'></my-clipboard-span>
 
 
       </pre>
@@ -119,10 +131,19 @@ export default {
         that.printText('异常', error.message)
       }
     },
+    close(){
+      this.socket && this.socket.close()
+    },
+    cleanAll(){
+      this.msgList = []
+    },
     sendMsg(){
       if(this.sendText) {
         this.printText('发送消息', this.sendText)
-        this.socket && this.socket.send(this.sendText)
+        if(this.socket){
+          this.socket.send(this.sendText)
+          this.sendText = ''
+        }
       }
     },
     exampleConnect(){
