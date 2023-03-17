@@ -14,7 +14,7 @@
       <div id="outputMsgView" style="height: 600px;border: 1px solid #3d3c3d;border-radius: 10px;padding: 10px;overflow-y: auto;">
         <div style="margin-bottom: 12px;" v-for="item in msgList">
           <h4 style="color: royalblue;">{{item.title}}: </h4>
-          <div>{{item.msg}}</div>
+          <div :style="{color: msgColor[item.from]}">{{item.msg}}</div>
         </div>
       </div>
 <!--      <textarea name="" cols="30" rows="10" v-model="outputText"></textarea>-->
@@ -66,7 +66,11 @@ export default {
       uri: '',
       outputText: '',
       sendText: '',
-      msgList: []
+      msgList: [],
+      msgColor: {
+        'send': '#17c9c1',
+        'receive': '#9b5e13',
+      }
     }
   },
   methods: {
@@ -77,7 +81,7 @@ export default {
       this.socket = socket
       socket.onopen = function (e) {
         // alert("[open] Connection established")
-        that.printText('连接成功', `连接成功`)
+        that.printText('receive','连接成功', `连接成功`)
       }
 
       socket.onmessage = function (event) {
@@ -98,7 +102,7 @@ export default {
             console.log("ArrayBuffer转字符串", msg)
             // global_callback(JSON.parse(msg));
             // alert(`[message] Data received from server: ${msg}`)
-            that.printText('服务端回应', `${msg}`)
+            that.printText('receive','服务端回应', `${msg}`)
 
             try{
               //火币心跳消息 https://huobiapi.github.io/docs/spot/v1/cn/#5ea2e0cde2-10
@@ -111,24 +115,24 @@ export default {
           }
         } else {
           // alert(`[message] Data received from server: ${event.data}`)
-          that.printText('服务端回应', `${event.data}`)
+          that.printText('receive','服务端回应', `${event.data}`)
         }
       }
 
       socket.onclose = function (event) {
         if (event.wasClean) {
           // alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`)
-          that.printText('关闭连接', `连接已关闭，code=${event.code} reason=${event.reason}`)
+          that.printText('receive','关闭连接', `连接已关闭，code=${event.code} reason=${event.reason}`)
         } else {
           // 例如服务器进程被杀死或网络中断
           // 在这种情况下，event.code 通常为 1006
           // alert("[close] Connection died")
-          that.printText('关闭连接', "服务器进程被杀死或网络中断")
+          that.printText('receive','关闭连接', "服务器进程被杀死或网络中断")
         }
       }
 
       socket.onerror = function (error) {
-        that.printText('异常', error.message)
+        that.printText('receive','异常', error.message)
       }
     },
     close(){
@@ -139,7 +143,7 @@ export default {
     },
     sendMsg(){
       if(this.sendText) {
-        this.printText('发送消息', this.sendText)
+        this.printText('send','发送消息', this.sendText)
         if(this.socket){
           this.socket.send(this.sendText)
           this.sendText = ''
@@ -149,9 +153,9 @@ export default {
     exampleConnect(){
 
     },
-    printText(type, msg){
+    printText(from, type, msg){
       this.msgList.push({
-        type: type,
+        from: from,
         title: `${type}  ${new Date().toString()}`,
         msg: msg
       })
