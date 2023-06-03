@@ -48,7 +48,7 @@ function _default_clipboard_error() {
 
 export default {
   beforeMount(el, binding, vnode) {
-    console.log(vnode)
+    console.debug('[clipboard.js] beforeMount vnode: %o', vnode)
     addClass(el, 'my-clipboard')
     el.setAttribute('title', '点击复制')
     let iconEle = document.createElement('i')
