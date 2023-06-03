@@ -55,10 +55,10 @@
 
 <script>
 import pako from 'pako'
-import MyClipboardSpan from "../components/Clipboard/MyClipboardSpan.vue"
+import MyClipboardSpan from "../../components/Clipboard/MyClipboardSpan.vue"
 
 export default {
-  name: "Home",
+  name: "WebSocket",
   components: { MyClipboardSpan },
   data () {
     return {
@@ -171,7 +171,7 @@ export default {
     }
   },
   beforeUnmount(){
-    this.socket.close();
+    this.socket && this.socket.close();
   }
 }
 </script>
