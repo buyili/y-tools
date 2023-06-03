@@ -1,6 +1,10 @@
 <template>
   <div class="home-page">
-    <router-link to="/ws">WebSocket</router-link>
+    <p>
+      <router-link to="/ws">WebSocket</router-link>
+      |
+      <router-link to="/tools">Tools</router-link>
+    </p>
   </div>
 </template>
 
@@ -15,5 +19,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 60px;
 }
 </style>
