@@ -1,6 +1,6 @@
 <template>
-  <div style="display: flex">
-    <a-space direction="vertical" style="width: 800px;padding: 30px;">
+  <div class="websocket-page">
+    <a-space direction="vertical" class="left-card">
       <a-row>
         <a-space>
           <a-input v-model:value="uri" type="text" @keypress.enter.stop="connect" />
@@ -198,8 +198,16 @@ export default {
 }
 </script>
 
-<style scoped>
-.output-card{
-  height: 600px;border: 1px solid #3d3c3d;border-radius: 10px;padding: 10px;overflow-y: auto;
+<style lang="less" scoped>
+.websocket-page{
+  display: flex;
+  margin-top: 60px;
+
+  .left-card{
+    width: 800px;padding: 30px;
+  }
+  .output-card{
+    height: 600px;border: 1px solid #3d3c3d;border-radius: 10px;padding: 10px;overflow-y: auto;
+  }
 }
 </style>

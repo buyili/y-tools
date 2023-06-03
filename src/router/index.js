@@ -1,10 +1,10 @@
 import * as VueRouter from 'vue-router'
-import WebSocket from "../src/ws/WebSocket.vue"
 import HomePage from "../src/HomePage.vue"
 
 const routes = [
   { path: '/', component: HomePage },
-  { path: '/ws', component: WebSocket },
+  { path: '/ws', component: ()=> import('../src/ws/WebSocket.vue') },
+  { path: '/tools', component: ()=>import('/src/src/tools/ToolsPage.vue') },
 ]
 
 const router = VueRouter.createRouter({
