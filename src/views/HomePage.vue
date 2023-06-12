@@ -4,6 +4,8 @@
       <router-link to="/ws">WebSocket</router-link>
       |
       <router-link to="/tools">Tools</router-link>
+      |
+      <router-link to="/tools/file-path">File Path</router-link>
     </p>
   </div>
 </template>
