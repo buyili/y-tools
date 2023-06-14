@@ -1,5 +1,9 @@
 <template>
-  <span v-if="value" v-clipboard="value">{{value}}<copy-outlined /></span>
+  <span v-if="value" v-clipboard="value">
+    <slot>
+      {{value}}<copy-outlined />
+    </slot>
+  </span>
 </template>
 
 <script>

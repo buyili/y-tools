@@ -6,6 +6,7 @@ const routes = [
   { path: '/ws', component: ()=> import('../views/ws/WebSocket.vue') },
   { path: '/tools', component: ()=>import('/src/views/tools/ToolsPage.vue') },
   { path: '/tools/file-path', component: ()=>import('/src/views/tools/filePath/FilePathPage.vue') },
+  { path: '/notes', component: ()=>import('/src/views/notes/index.vue') },
 ]
 
 const router = VueRouter.createRouter({
