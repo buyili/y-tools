@@ -80,14 +80,14 @@
         <a-row :gutter="[16, 8]">
           <!--          <a-textarea v-model:value="fastConversion.doubleBackSlashValue" placeholder="target value" :rows="6" />-->
           <div class="target-value-preview">
-            <my-clipboard-span :value="fastConversion.forwardSlashValue" />
+            <my-clipboard-span :value="fastConversion.doubleBackSlashValue" />
           </div>
         </a-row>
         <a-typography-title class="mt20" :level="3">转换为反斜杠路径，如：foo/bar</a-typography-title>
         <a-row :gutter="[16, 8]">
           <!--          <a-textarea v-model:value="fastConversion.backSlashValue" placeholder="target value" :rows="6" />-->
           <div class="target-value-preview">
-            <my-clipboard-span :value="fastConversion.forwardSlashValue" />
+            <my-clipboard-span :value="fastConversion.backSlashValue" />
           </div>
         </a-row>
       </a-col>
