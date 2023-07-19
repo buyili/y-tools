@@ -1,0 +1,9 @@
+export const isString = o => Object.prototype.toString.call(o).slice(8, -1) === "String"; //是否是字符串
+export const isNumber = o => Object.prototype.toString.call(o).slice(8, -1) === "Number"; //是否数字
+export const isObj = o => Object.prototype.toString.call(o).slice(8, -1) === "Object"; //是否对象
+export const isArray = o => Object.prototype.toString.call(o).slice(8, -1) === "Array"; //是否数组
+export const isDate = o => Object.prototype.toString.call(o).slice(8, -1) === "Date"; //是否时间
+export const isBoolean = o => Object.prototype.toString.call(o).slice(8, -1) === "Boolean"; //是否boolean
+export const isFunction = o => Object.prototype.toString.call(o).slice(8, -1) === "Function"; //是否函数
+export const isNull = o => Object.prototype.toString.call(o).slice(8, -1) === "Null"; //是否为null
+export const isUndefined = o => Object.prototype.toString.call(o).slice(8, -1) === "Undefined"; //是否为undefined
