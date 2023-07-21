@@ -80,7 +80,12 @@ export default {
       }
     }
   },
-  update(el, binding) {
+  // 绑定元素的父组件更新前调用
+  beforeUpdate(el, binding, vnode, prevVnode) {
+    // console.debug(el,binding,vnode,prevVnode)
+  },
+  updated(el, binding) {
+    // console.debug(el, binding)
     if (binding.arg === 'success') {
       el._vClipBoard_success = binding.value || _default_clipboard_success;
     } else if (binding.arg === 'error') {

@@ -36,9 +36,11 @@ export function toCamel(str) {
 }
 
 export function toPascalCase(str){
-  return str.replace(/([^_])(?:_+([^_]))/g, function ($0, $1, $2) {
+  str = str.replace(/([^_])(?:_+([^_]))/g, function ($0, $1, $2) {
     return $1 + $2.toUpperCase()
-  })
+  });
+  str = str.slice(0,1).toUpperCase() +str.slice(1);
+  return str
 }
 
 

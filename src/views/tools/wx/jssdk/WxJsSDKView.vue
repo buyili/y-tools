@@ -97,26 +97,10 @@
 
 <script>
 import MyClipboardSpan from "@/components/Clipboard/MyClipboardSpan.vue";
-const forwardToBackSlash = (value)=>{
-  return value.replaceAll("/", "\\")
-}
-const forwardToDoubleBackSlash = (value)=>{
-  return value.replaceAll("/", "\\\\")
-}
-const backToForwardSlash = (value)=>{
-  return value.replaceAll("\\", "/")
-}
-const backToDoubleBackSlash = (value)=>{
-  return value.replaceAll("\\", "\\\\")
-}
-const doubleBackToForwardSlash=(value)=>{
-  return value.replaceAll("\\\\", "/")
-}
-const doubleBackToBackSlash=(value)=>{
-  return value.replaceAll("\\\\", "\\")
-}
+import {toPascalCase} from "@/utils";
+
 export default {
-  name: "FilePathPage",
+  name: "WxJsSDKView",
   components: {MyClipboardSpan},
   data() {
     return {
@@ -148,15 +132,51 @@ export default {
       this.originTargetValue3 = newValue.replaceAll("\\", "\\\\")
     },
     ['fastConversion.originValue'](newValue){
-      if(newValue.indexOf("\\") !== -1){
-        newValue = backToForwardSlash(newValue)
-      }else if(newValue.indexOf("\\\\") !== -1){
-        newValue = doubleBackToForwardSlash(newValue)
-      }
-      this.fastConversion.forwardSlashValue = newValue
-      this.fastConversion.backSlashValue = forwardToBackSlash(newValue)
-      this.fastConversion.doubleBackSlashValue = forwardToDoubleBackSlash(newValue)
+      let pascalCaseVar = toPascalCase(newValue)
+      this.fastConversion.forwardSlashValue = `
+  interface ${pascalCaseVar}SuccessCallbackResult extends GeneralCallbackResult {
+  }
+  interface ${pascalCaseVar}FailCallbackResult extends GeneralCallbackResult {
+  }
+  interface ${pascalCaseVar}CompleteCallbackResult extends GeneralCallbackResult {
+  }
+  /** 接口调用成功的回调函数 */
+  type ${pascalCaseVar}SuccessCallback = (
+    res: ${pascalCaseVar}SuccessCallbackResult
+  ) => void;
+  /** 接口调用失败的回调函数 */
+  type ${pascalCaseVar}FailCallback = (
+    res: ${pascalCaseVar}FailCallbackResult
+  ) => void;
+  /** 接口调用结束的回调函数（调用成功、失败都会执行） */
+  type ${pascalCaseVar}CompleteCallback = (
+    res: ${pascalCaseVar}CompleteCallbackResult
+  ) => void;
+      `
+//       this.fastConversion.backSlashValue = `
+// ${newValue}<T extends ${pascalCaseVar}Option = ${pascalCaseVar}Option>(
+//   option: T,
+// ): void;
+// `
+      this.fastConversion.backSlashValue = `
+${newValue}(
+  option: ${pascalCaseVar}Option,
+): void;
+`
+      this.fastConversion.doubleBackSlashValue = `
+  interface ${pascalCaseVar}Option {
+    /** 接口调用成功的回调函数 */
+    success?: ${pascalCaseVar}SuccessCallback;
+    /** 接口调用失败的回调函数 */
+    fail?: ${pascalCaseVar}FailCallback;
+    /** 接口调用结束的回调函数（调用成功、失败都会执行）*/
+    complete?: ${pascalCaseVar}CompleteCallback;
+  }
+      `
     }
+  },
+  created() {
+    this.fastConversion.originValue='playVoice'
   },
   methods: {
     winToLinux() {
@@ -169,12 +189,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .target-value-preview{
   width: 100%;
   height: 140px;
   padding: 8px 12px;
   border: 1px solid #c4c4c4;
   border-radius: 6px;
+  overflow-y: auto;
+  ::v-deep .my-clipboard{
+    white-space: pre;
+  }
 }
 </style>
