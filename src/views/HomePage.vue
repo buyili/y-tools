@@ -7,6 +7,10 @@
       |
       <router-link to="/tools/file-path">File Path</router-link>
       |
+      <router-link to="/tools/mybatis">mybatis</router-link>
+      |
+      <router-link to="/tools/wx/jssdk">wx js sdk</router-link>
+      |
       <router-link to="/notes">Notes</router-link>
     </p>
   </div>

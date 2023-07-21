@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import MyClipboardSpan from "/src/components/Clipboard/MyClipboardSpan.vue";
+import MyClipboardSpan from "@/components/Clipboard/MyClipboardSpan.vue";
 const forwardToBackSlash = (value)=>{
   return value.replaceAll("/", "\\")
 }

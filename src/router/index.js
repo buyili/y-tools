@@ -4,9 +4,11 @@ import HomePage from "../views/HomePage.vue"
 const routes = [
   { path: '/', component: HomePage },
   { path: '/ws', component: ()=> import('../views/ws/WebSocket.vue') },
-  { path: '/tools', component: ()=>import('/src/views/tools/ToolsPage.vue') },
-  { path: '/tools/file-path', component: ()=>import('/src/views/tools/filePath/FilePathPage.vue') },
-  { path: '/notes', component: ()=>import('/src/views/notes/index.vue') },
+  { path: '/tools', component: ()=>import('@/views/tools/ToolsPage.vue') },
+  { path: '/tools/file-path', component: ()=>import('@/views/tools/filePath/FilePathPage.vue') },
+  { path: '/tools/mybatis', component: ()=>import('@/views/tools/mybatis/MybatisToolsPage.vue') },
+  { path: '/tools/wx/jssdk', component: ()=>import('@/views/tools/wx/jssdk/WxJsSDKView.vue') },
+  { path: '/notes', component: ()=>import('@/views/notes/index.vue') },
 ]
 
 const router = VueRouter.createRouter({
