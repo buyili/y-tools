@@ -134,7 +134,7 @@ ${newValue}(
   border: 1px solid #c4c4c4;
   border-radius: 6px;
   overflow-y: auto;
-  ::v-deep .my-clipboard{
+  :deep(.my-clipboard){
     white-space: pre;
   }
 }

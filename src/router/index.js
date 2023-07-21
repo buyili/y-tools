@@ -6,7 +6,7 @@ const routes = [
   { path: '/ws', component: ()=> import('../views/ws/WebSocket.vue') },
   { path: '/tools', component: ()=>import('@/views/tools/ToolsPage.vue') },
   { path: '/tools/file-path', component: ()=>import('@/views/tools/filePath/FilePathPage.vue') },
-  { path: '/tools/mybatis', component: ()=>import('@/views/tools/mybatis/MybatisToolsPage.vue') },
+  { path: '/tools/mybatis', component: ()=>import('@/views/tools/mybatis/MyBatisToolsPage.vue') },
   { path: '/tools/wx/jssdk', component: ()=>import('@/views/tools/wx/jssdk/WxJsSDKView.vue') },
   { path: '/notes', component: ()=>import('@/views/notes/index.vue') },
 ]
