@@ -2,92 +2,32 @@
   <div class="page-container">
     <a-row :gutter="[64, 8]">
       <a-col :span="12">
-        <a-typography-title :level="3">将Windows反斜杠路径转换为正斜杠路径，如foo\bar ➔ foo/bar</a-typography-title>
+        <a-typography-title :level="3">Method Name</a-typography-title>
         <a-row :gutter="[16, 8]">
-          <a-col :span="24">
-            <div class="left">
-              <a-textarea v-model:value="originValue" placeholder="origin value" :rows="3" />
-            </div>
-          </a-col>
-
-          <a-col :span="24">
-            <div class="left">
-              <a-button @click="winToLinux">转换</a-button>
-            </div>
-          </a-col>
-
-          <a-col :span="24">
-            <div class="right">
-              <a-textarea v-model:value="originTargetValue" placeholder="target value" :rows="3" />
-            </div>
-          </a-col>
-        </a-row>
-        <a-typography-title class="mt40" :level="3">将Windows反斜杠路径转换为双反斜杠路径，如foo\bar ➔ foo\\bar</a-typography-title>
-        <a-row :gutter="[16, 8]">
-          <a-col :span="24">
-            <div class="left">
-              <a-textarea v-model:value="originValue3" placeholder="origin value" :rows="3" />
-            </div>
-          </a-col>
-
-          <a-col :span="24">
-            <div class="left">
-              <a-button @click="winToLinux">转换</a-button>
-            </div>
-          </a-col>
-
-          <a-col :span="24">
-            <div class="right">
-              <a-textarea v-model:value="originTargetValue3" placeholder="target value" :rows="3" />
-            </div>
-          </a-col>
-        </a-row>
-        <a-typography-title class="mt40" :level="3">将斜杠路径转换为Windows反斜杠路径，如foo/bar ➔ foo\bar</a-typography-title>
-        <a-row :gutter="[16, 8]">
-          <a-col :span="24">
-            <div class="left">
-              <a-textarea v-model:value="originValue2" placeholder="origin value" :rows="3" />
-            </div>
-          </a-col>
-
-          <a-col :span="24">
-            <div class="left">
-              <a-button @click="linuxToWin">转换</a-button>
-            </div>
-          </a-col>
-
-          <a-col :span="24">
-            <div class="right">
-              <a-textarea v-model:value="originTargetValue2" placeholder="target value" :rows="3" />
-            </div>
-          </a-col>
+          <a-textarea v-model:value="fastConversion.originValue" placeholder="origin value" :rows="6" />
         </a-row>
       </a-col>
 
       <a-col :span="12">
-        <a-typography-title :level="3">源路径，如：foo\bar  foo\\bar  foo/bar</a-typography-title>
-        <a-row :gutter="[16, 8]">
-          <a-textarea v-model:value="fastConversion.originValue" placeholder="origin value" :rows="6" />
-        </a-row>
-        <a-typography-title class="mt40" :level="3">转换为正斜杠路径，如：foo/bar</a-typography-title>
+        <a-typography-title class="" :level="3">Callback and CallbackResult</a-typography-title>
         <a-row :gutter="[16, 8]">
           <!--          <a-textarea v-model:value="fastConversion.forwardSlashValue" placeholder="target value" :rows="6" />-->
-          <div class="target-value-preview" placeholder="target value">
-            <my-clipboard-span :value="fastConversion.forwardSlashValue" />
+          <div class="target-value-preview">
+            <my-clipboard-span :value="fastConversion.callbackAndCallbackResultValue" />
           </div>
         </a-row>
-        <a-typography-title class="mt20" :level="3">转换为双反斜杠路径，如：foo\\bar</a-typography-title>
+        <a-typography-title class="mt20" :level="3">Option</a-typography-title>
         <a-row :gutter="[16, 8]">
           <!--          <a-textarea v-model:value="fastConversion.doubleBackSlashValue" placeholder="target value" :rows="6" />-->
           <div class="target-value-preview">
-            <my-clipboard-span :value="fastConversion.doubleBackSlashValue" />
+            <my-clipboard-span :value="fastConversion.optionValue" />
           </div>
         </a-row>
-        <a-typography-title class="mt20" :level="3">转换为反斜杠路径，如：foo/bar</a-typography-title>
+        <a-typography-title class="mt20" :level="3">Method</a-typography-title>
         <a-row :gutter="[16, 8]">
           <!--          <a-textarea v-model:value="fastConversion.backSlashValue" placeholder="target value" :rows="6" />-->
           <div class="target-value-preview">
-            <my-clipboard-span :value="fastConversion.backSlashValue" />
+            <my-clipboard-span :value="fastConversion.methodValue" />
           </div>
         </a-row>
       </a-col>
@@ -113,11 +53,11 @@ export default {
       fastConversion: {
         originValue: '',
         //正斜杠
-        forwardSlashValue: '',
+        callbackAndCallbackResultValue: '',
         //反斜杠
-        backSlashValue: '',
+        methodValue: '',
         //双反斜杠
-        doubleBackSlashValue: '',
+        optionValue: '',
       }
     }
   },
@@ -133,13 +73,10 @@ export default {
     },
     ['fastConversion.originValue'](newValue){
       let pascalCaseVar = toPascalCase(newValue)
-      this.fastConversion.forwardSlashValue = `
-  interface ${pascalCaseVar}SuccessCallbackResult extends GeneralCallbackResult {
-  }
-  interface ${pascalCaseVar}FailCallbackResult extends GeneralCallbackResult {
-  }
-  interface ${pascalCaseVar}CompleteCallbackResult extends GeneralCallbackResult {
-  }
+      this.fastConversion.callbackAndCallbackResultValue = `
+  interface ${pascalCaseVar}SuccessCallbackResult extends GeneralCallbackResult {}
+  interface ${pascalCaseVar}FailCallbackResult extends GeneralCallbackResult {}
+  interface ${pascalCaseVar}CompleteCallbackResult extends GeneralCallbackResult {}
   /** 接口调用成功的回调函数 */
   type ${pascalCaseVar}SuccessCallback = (
     res: ${pascalCaseVar}SuccessCallbackResult
@@ -152,18 +89,18 @@ export default {
   type ${pascalCaseVar}CompleteCallback = (
     res: ${pascalCaseVar}CompleteCallbackResult
   ) => void;
-      `
+      `.replace("\n", '')
 //       this.fastConversion.backSlashValue = `
 // ${newValue}<T extends ${pascalCaseVar}Option = ${pascalCaseVar}Option>(
 //   option: T,
 // ): void;
 // `
-      this.fastConversion.backSlashValue = `
+      this.fastConversion.methodValue = `
 ${newValue}(
   option: ${pascalCaseVar}Option,
 ): void;
-`
-      this.fastConversion.doubleBackSlashValue = `
+`.replace("\n", '')
+      this.fastConversion.optionValue = `
   interface ${pascalCaseVar}Option {
     /** 接口调用成功的回调函数 */
     success?: ${pascalCaseVar}SuccessCallback;
@@ -172,7 +109,7 @@ ${newValue}(
     /** 接口调用结束的回调函数（调用成功、失败都会执行）*/
     complete?: ${pascalCaseVar}CompleteCallback;
   }
-      `
+      `.replace("\n", '')
     }
   },
   created() {
