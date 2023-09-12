@@ -1,6 +1,6 @@
 import * as VueRouter from 'vue-router'
 import HomePage from "../views/HomePage.vue"
-import Layout from "../views/Layout/Index.vue"
+import Layout from "../views/layout/Index.vue"
 
 const routes = [
   { path: '/', component: HomePage },
