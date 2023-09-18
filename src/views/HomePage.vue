@@ -9,6 +9,8 @@
       |
       <router-link to="/tools/mybatis">mybatis</router-link>
       |
+      <router-link to="/tools/json-to-ts">json to ts</router-link>
+      |
       <router-link to="/tools/wx/jssdk">wx js sdk</router-link>
       |
       <router-link to="/notes">Notes</router-link>
