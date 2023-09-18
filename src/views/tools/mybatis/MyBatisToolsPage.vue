@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <a-typography-title>JSON字符串转JavaScript对象</a-typography-title>
+    <a-typography-title>JSON 转 Mybatis XML</a-typography-title>
     <a-row :gutter="16">
       <a-col :span="12">
         <div class="left">
