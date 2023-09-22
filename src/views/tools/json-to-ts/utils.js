@@ -34,7 +34,7 @@ function toTsDeclare(obj, indentSize) {
     rs = rs.concat(`{\n`)
     for (const key in obj) {
       let temp = obj[key]
-      console.log(`${key}: ${toTsDeclare(temp, indentSize)}`)
+      // console.log(`${key}: ${toTsDeclare(temp, indentSize)}`)
       rs = rs.concat(getSpace(indentSize), `${key}: ${toTsDeclare(temp, indentSize + 2)}\n`)
     }
     rs = rs.concat(getSpace(indentSize), `}`)
