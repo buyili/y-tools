@@ -28,31 +28,35 @@ function isBasicType(value) {
   return isString(value) || isBoolean(value) || isNumber(value);
 }
 
-function toTsDeclare(obj, indentSize) {
+function getKeyStr(key, options) {
+  return `${key}${options?.includeQuestionMark ? '?' : ''}`
+}
+
+function toTsDeclare(obj, indentSize, options) {
   let rs = ''
   if (isObj(obj)) {
     rs = rs.concat(`{\n`)
     for (const key in obj) {
       let temp = obj[key]
       // console.log(`${key}: ${toTsDeclare(temp, indentSize)}`)
-      rs = rs.concat(getSpace(indentSize), `${key}: ${toTsDeclare(temp, indentSize + 2)}\n`)
+      rs = rs.concat(getSpace(indentSize), `${getKeyStr(key, options)}: ${toTsDeclare(temp, indentSize + 2, options)}\n`)
     }
     rs = rs.concat(getSpace(indentSize), `}`)
   } else if (isArray(obj)) {
     let temp = obj[0]
-    rs = rs.concat(`${toTsDeclare(temp, indentSize + 2)}[]`)
+    rs = rs.concat(`${toTsDeclare(temp, indentSize + 2, options)}[]`)
   } else {
-    return getType(obj);
+    return (getType(obj) + (options?.includeSemicolon ? ';' : ''));
   }
   return rs
 }
 
-export function getTsDeclare(jsonText, indentSize = 2) {
+export function getTsDeclare(jsonText, indentSize = 2, options = { includeQuestionMark: true, includeSemicolon: true }) {
   let jsonObj = Object.assign({}, jsonText)
   if (isString(jsonText)) {
     jsonObj = JSON.parse(jsonText)
   }
-  return toTsDeclare(jsonObj, indentSize);
+  return toTsDeclare(jsonObj, indentSize, options);
 }
 
 
