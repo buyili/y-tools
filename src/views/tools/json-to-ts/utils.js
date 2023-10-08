@@ -89,3 +89,30 @@ export function getTsDeclare(jsonText, indentSize = 2, options = { includeQuesti
 //   return rs
 // }
 
+function setDefaultValue (obj) {
+  for (let key in obj) {
+    obj[key] = undefined
+  }
+  return obj
+}
+export function getEmptyJson(jsonText){
+  let jsonObj = Object.assign({}, jsonText)
+  if(isString(jsonText)){
+    jsonObj = JSON.parse(jsonText)
+  }
+  jsonObj = setDefaultValue(jsonObj)
+
+  let text = JSON.stringify(jsonObj, function (k, v) {
+    if(k === ''){
+      return v;
+    }
+    return "undefined";
+  }, 2)
+
+  // 去除key的双引号
+  let rs = text.replaceAll(/"(\w+)"(\s*:\s*)/g, "$1$2")
+  // 去除 "undefined" 的双引号
+  rs = rs.replaceAll(/"(undefined)"/g, "$1")
+  return rs
+}
+

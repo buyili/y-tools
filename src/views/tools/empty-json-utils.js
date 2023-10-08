@@ -38,7 +38,7 @@ export function getEmptyJson(jsonText){
   jsonObj = setDefaultValue(jsonObj)
 
   let text = JSON.stringify(jsonObj, null, 2)
-
+  // 去除key的双引号
   let rs = text.replaceAll(/"(\w+)"(\s*:\s*)/g, "$1$2")
   return rs
 }
