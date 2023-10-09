@@ -58,7 +58,7 @@ export default {
       if(!value){
         return ''
       }
-      console.log("",value)
+      // console.log("",value)
       return getTsDeclare(value, 2, this.condition)
     },
     targetValue2 () {

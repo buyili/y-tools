@@ -91,7 +91,12 @@ export function getTsDeclare(jsonText, indentSize = 2, options = { includeQuesti
 
 function setDefaultValue (obj) {
   for (let key in obj) {
-    obj[key] = undefined
+    let value = obj[key]
+    if(isObj(value)){
+      obj[key] = setDefaultValue(value)
+    } else {
+      obj[key] = undefined
+    }
   }
   return obj
 }
@@ -103,7 +108,7 @@ export function getEmptyJson(jsonText){
   jsonObj = setDefaultValue(jsonObj)
 
   let text = JSON.stringify(jsonObj, function (k, v) {
-    if(k === ''){
+    if(k === '' || isObj(v)){
       return v;
     }
     return "undefined";
