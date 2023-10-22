@@ -1,8 +1,9 @@
 <template>
   <span v-if="value" v-clipboard="value">
     <slot>
-      {{value}}<copy-outlined />
+      {{value}}
     </slot>
+    <copy-outlined />
   </span>
 </template>
 
