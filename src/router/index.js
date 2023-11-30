@@ -12,6 +12,7 @@ const routes = [
     { path: '/tools/json-to-ts', component: ()=>import('@/views/tools/json-to-ts/JsonToTsPage.vue') },
     { path: '/tools/css-to-json', component: ()=>import('@/views/tools/css-to-json/CssToJsonPage.vue') },
     { path: '/tools/wx/jssdk', component: ()=>import('@/views/tools/wx/jssdk/WxJsSDKView.vue') },
+    { path: '/tools/npm-search', component: ()=>import('@/views/tools/npm-search/NpmSearchPage.vue') },
     { path: '/notes', component: ()=>import('@/views/notes/index.vue') },
   ]}
 ]

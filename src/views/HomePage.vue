@@ -15,6 +15,8 @@
       |
       <router-link to="/tools/wx/jssdk">wx js sdk</router-link>
       |
+      <router-link to="/tools/npm-search">npm search</router-link>
+      |
       <router-link to="/notes">Notes</router-link>
     </p>
   </div>
