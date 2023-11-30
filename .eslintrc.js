@@ -9,13 +9,14 @@ module.exports = {
     // "off" or 0 - turn the rule off
     // "warn" or 1 - turn the rule on as a warning (doesn’t affect exit code)
     // "error" or 2 - turn the rule on as an error (exit code is 1 when triggered)
-    
+
     // Available rules for Vue.js: https://eslint.vuejs.org/rules/
     // override/add rules settings here, such as:
     // 'vue/no-unused-vars': 'error'
     'vue/singleline-html-element-content-newline': 'off',
     'vue/max-attributes-per-line': ['warn', {
       'singleline': 3
-    }]
+    }],
+    'semi': [0]
   }
 }
