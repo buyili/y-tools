@@ -144,6 +144,7 @@ export default {
   }
   .version-list-wrapper{
     height: 500px;
+    overflow-y: auto;
   }
   .version-list{
     list-style: none;
