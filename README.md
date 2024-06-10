@@ -6,6 +6,8 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 - [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
 
+## Dependency
+- [ant-design-vue 3.x](https://3x.antdv.com/components/overview)
 
 ## Feature
 - package search on npmjs
