@@ -5,6 +5,14 @@
         <a-typography-title>JSON 转 Mybatis XML</a-typography-title>
       </a-col>
       <a-col :span="12">
+        <a-form
+          layout="inline"
+          :model="condition"
+        >
+          <a-form-item label="HarmonyOS">
+            <a-switch v-model:checked="condition.isHOS" />
+          </a-form-item>
+        </a-form>
         <my-clipboard-span :value="targetValue">复制</my-clipboard-span>
       </a-col>
     </a-row>
@@ -32,6 +40,9 @@ export default {
   data () {
     return {
       originValue: originValue,
+      condition: {
+        isHOS: false,
+      }
     }
   },
   computed: {
@@ -41,7 +52,7 @@ export default {
         return ''
       }
       // console.log("",value)
-      return JSON.stringify(parseFun(value), null, 2)
+      return JSON.stringify(parseFun(value, {forHOS: this.condition.isHOS}), null, 2)
     },
   },
 
