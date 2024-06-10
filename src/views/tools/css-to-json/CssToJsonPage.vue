@@ -10,7 +10,14 @@
           :model="condition"
         >
           <a-form-item label="HarmonyOS">
-            <a-switch v-model:checked="condition.isHOS" />
+            <a-space>
+              <a-switch v-model:checked="condition.isHOS" />
+              <a
+                href="https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V2/js-appendix-types-0000001478341245-V2#ZH-CN_TOPIC_0000001523648682__%E9%A2%9C%E8%89%B2%E7%B1%BB%E5%9E%8B"
+              >
+                HarmonyOS HEX格式为#aarrggbb
+              </a>
+            </a-space>
           </a-form-item>
         </a-form>
         <my-clipboard-span :value="targetValue">复制</my-clipboard-span>
