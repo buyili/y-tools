@@ -14,7 +14,8 @@
     "pako": "^2.1.0",
     "vue": "^3.2.25",
     "vue-router": "^4.2.2",
-    "ws": "^8.12.1"
+    "ws": "^8.12.1",
+    "y-tools": "file:"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.4",

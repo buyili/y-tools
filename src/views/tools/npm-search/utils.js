@@ -54,6 +54,14 @@ function getCompareFunc(version){
   }
 }
 
+function buildFoundPackage(packageInfo, dependencyName, dependencyVersion){
+  return {
+    ...packageInfo,
+    targetDependencyName: dependencyName,
+    targetDependencyVersion: dependencyVersion
+  }
+}
+
 export function findVersionsByDependency(versions, packageSpec){
   const withVersion = isPackageNameWithVersion(packageSpec)
   const foundDependencies = []
@@ -65,13 +73,15 @@ export function findVersionsByDependency(versions, packageSpec){
       if (Object.hasOwnProperty.call(versions, remoteVersionKey)) {
         const remoteVersion = versions[remoteVersionKey];
         for (const dependencyKey in remoteVersion.dependencies) {
-          if(dependencyKey === packageSpecName && compareFunc(packageSpecVersion, remoteVersion.dependencies[dependencyKey])){
-            foundDependencies.push(remoteVersion)
+          let dependencyVersion = remoteVersion.dependencies[dependencyKey]
+          if(dependencyKey === packageSpecName && compareFunc(packageSpecVersion, dependencyVersion)){
+            foundDependencies.push(buildFoundPackage(remoteVersion, dependencyKey, dependencyVersion))
           }
         }
         for (const dependencyKey in remoteVersion.devDependencies) {
-          if(dependencyKey === packageSpecName && compareFunc(packageSpecVersion, remoteVersion.devDependencies[dependencyKey])){
-            foundDependencies.push(remoteVersion)
+          let dependencyVersion = remoteVersion.devDependencies[dependencyKey]
+          if(dependencyKey === packageSpecName && compareFunc(packageSpecVersion, dependencyVersion)){
+            foundDependencies.push(buildFoundPackage(remoteVersion, dependencyKey, dependencyVersion))
           }
         }
       }
@@ -81,13 +91,15 @@ export function findVersionsByDependency(versions, packageSpec){
       if (Object.hasOwnProperty.call(versions, remoteVersionKey)) {
         const remoteVersion = versions[remoteVersionKey];
         for (const dependencyKey in remoteVersion.dependencies) {
+          let dependencyVersion = remoteVersion.dependencies[dependencyKey]
           if(dependencyKey === packageSpec){
-            foundDependencies.push(remoteVersion)
+            foundDependencies.push(buildFoundPackage(remoteVersion, dependencyKey, dependencyVersion))
           }
         }
         for (const dependencyKey in remoteVersion.devDependencies) {
+          let dependencyVersion = remoteVersion.devDependencies[dependencyKey]
           if(dependencyKey === packageSpec){
-            foundDependencies.push(remoteVersion)
+            foundDependencies.push(buildFoundPackage(remoteVersion, dependencyKey, dependencyVersion))
           }
         }
       }

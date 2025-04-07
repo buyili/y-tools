@@ -1,8 +1,15 @@
 <template>
   <div class="npm-search-container">
     <a-space direction="vertical" style="width: 100%">
+      <a-alert
+        message=""
+        description="根据依赖包版本查询项目版本，比如：查询哪些版本的 ts-loader 依赖了 webpack@^3.0.0。"
+        type="info"
+        show-icon
+      />
+
       <div style="text-align: center">
-        <a-button @click="loadInit">加载示例</a-button>
+        <a-button type="primary" @click="loadInit">加载示例</a-button>
       </div>
       <a-form
         ref="formRef"
@@ -11,7 +18,7 @@
         :rules="rules"
         @finish="search"
         @validate="handleValidate"
-        @finishFailed="handleFinishFailed"
+        @finish-failed="handleFinishFailed"
       >
         <a-input-group compact style="width: 100%;display: flex;">
           <a-form-item name="packageName">
@@ -52,10 +59,16 @@
               <ul class="version-list">
                 <li v-for="rs in searchResultVersions" :key="rs.version" class="version-list-item">
                   <a :href="buildPackagePageUrl(rs)" target="_blank">{{ rs.name }}@{{ rs.version }}</a>
+                  <span class=""> 依赖 </span>
+                  <span target="_blank">{{ rs.targetDependencyName }}@{{ rs.targetDependencyVersion }}</span>
                   <span class="mr40" />
-                  <a :href="buildPackagePageDepsUrl(rs)" target="_blank">依赖信息</a>
+                  <a :href="buildPackagePageDepsUrl(rs)" target="_blank">查看{{ rs.name }}@{{ rs.version }}完整依赖信息</a>
                 </li>
               </ul>
+            </template>
+            <template v-else-if="searchResultStatus === 'error'">
+              <a-result :status="searchResultData.status" :title="searchResultData.title" :sub-title="searchResultData.subtitle">
+              </a-result>
             </template>
             <template v-else>
               <a-empty />
@@ -87,13 +100,32 @@ export default {
         packageName: [{ required: true, message: '请输入包名', trigger: 'change' }],
         dependencyPackageSpec: [{ required: true, message: '请输入依赖包过滤字符', trigger: 'change' }],
       },
-      searchResultVersions: []
+      searchResultVersions: [],
+      // success、error
+      searchResultStatus: 'success',
+      searchResultData: {
+        status: '',
+        title: '',
+        subtitle: ''
+      }
     }
   },
   methods: {
+    created(){
+      this.initSearchResult()
+    },
     loadInit(){
       this.formState.packageName = 'ts-loader'
       this.formState.dependencyPackageSpec = 'webpack@^3.0.0'
+    },
+    initSearchResult(){
+      this.searchResultVersions = []
+      this.searchResultStatus = 'success'
+      this.searchResultData = {
+        status: '',
+        title: '',
+        subtitle: ''
+      }
     },
     search(values) {
       // const qs = this.formState.packageName.trim()
@@ -101,14 +133,30 @@ export default {
       //或者
       const qs = values.packageName.trim()
       const packageSpec = values.dependencyPackageSpec.trim()
+      // clean result
+      this.initSearchResult()
+
       this.loading = true
-      fetch("https://registry.npmmirror.com/" + qs).then(res=>{
-        res.json().then(resp=>{
-          this.searchResultVersions = findVersionsByDependency(resp.versions, packageSpec)
+      fetch("https://registry.npmmirror.com/" + qs).then(async res => {
+        if (res.ok) {
+          res.json().then(resp => {
+            console.log(resp)
+            this.searchResultVersions = findVersionsByDependency(resp.versions, packageSpec)
+            this.searchResultStatus = 'success'
+            this.loading = false
+          }).catch(() => {
+            this.loading = false
+          })
+        } else if (!res.ok) {
+          console.log(res)
+          this.searchResultData = {
+            status: 'error',
+            title: '404',
+            subtitle: (await res.json()).error
+          }
+          this.searchResultStatus = 'error'
           this.loading = false
-        }).catch(()=>{
-          this.loading = false
-        })
+        }
       }).catch(()=>{
         this.loading = false
       })

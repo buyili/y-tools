@@ -14,5 +14,6 @@ export default {
 <style>
 .nav{
     text-align: center;
+    font-size: 36px;
 }
 </style>
