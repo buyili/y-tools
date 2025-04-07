@@ -1,6 +1,6 @@
 <template>
   <div class="home-page">
-    <p>
+    <p style="font-size: 36px;">
       <router-link to="/ws">WebSocket</router-link>
       |
       <router-link to="/tools">Tools</router-link>
