@@ -58,23 +58,25 @@
         <a-typography-title :level="4" style="font-size: 16px;">搜索结果:</a-typography-title>
         <a-spin :spinning="loading">
           <div class="version-list-wrapper">
-            <template v-if="searchResultVersions && searchResultVersions.length">
-              <ul class="version-list">
-                <li v-for="rs in searchResultVersions" :key="rs.version" class="version-list-item">
-                  <a :href="buildPackagePageUrl(rs)" target="_blank">{{ rs.name }}@{{ rs.version }}</a>
-                  <span class=""> 依赖 </span>
-                  <span>{{ rs.targetDependencyName }}@{{ rs.targetDependencyVersion }}</span>
-                  <span class="mr40" />
-                  <a :href="buildPackagePageDepsUrl(rs)" target="_blank">查看{{ rs.name }}@{{ rs.version }}完整依赖信息</a>
-                </li>
-              </ul>
+            <template v-if="searchResultStatus === 'success'">
+              <template v-if="searchResultVersions && searchResultVersions.length">
+                <ul class="version-list">
+                  <li v-for="rs in searchResultVersions" :key="rs.version" class="version-list-item">
+                    <a :href="buildPackagePageUrl(rs)" target="_blank">{{ rs.name }}@{{ rs.version }}</a>
+                    <span class=""> 依赖 </span>
+                    <span>{{ rs.targetDependencyName }}@{{ rs.targetDependencyVersion }}</span>
+                    <span class="mr40" />
+                    <a :href="buildPackagePageDepsUrl(rs)" target="_blank">查看{{ rs.name }}@{{ rs.version }}完整依赖信息</a>
+                  </li>
+                </ul>
+              </template>
+              <template v-else>
+                <a-empty />
+              </template>
             </template>
             <template v-else-if="searchResultStatus === 'error'">
               <a-result :status="searchResultData.status" :title="searchResultData.title" :sub-title="searchResultData.subtitle">
               </a-result>
-            </template>
-            <template v-else>
-              <a-empty />
             </template>
           </div>
         </a-spin>
@@ -161,6 +163,12 @@ export default {
           this.loading = false
         }
       }).catch(()=>{
+        this.searchResultStatus = 'error'
+        this.searchResultData = {
+          status: 'error',
+          title: '404',
+          subtitle: 'Network error'
+        }
         this.loading = false
       })
     },
