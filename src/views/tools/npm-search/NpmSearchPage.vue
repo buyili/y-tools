@@ -22,7 +22,7 @@
       >
         <a-input-group compact style="width: 100%;display: flex;">
           <a-form-item name="packageName">
-            <a-input v-model:value="formState.packageName" placeholder="package name" style="width: 230px;text-align: left;" />
+            <a-input v-model:value="formState.packageName" allowClear placeholder="包名" style="width: 230px;text-align: left;" />
             <div>示例：ts-loader、@ant-design/icons-vue</div>
           </a-form-item>
           <a-form-item
@@ -31,21 +31,24 @@
           >
             <a-input
               v-model:value="formState.dependencyPackageSpec"
-              placeholder="dependency package spec"
+              allowClear
+              placeholder="包依赖名"
             />
             <div>依赖包过滤字符示例： webpack、webpack@3.0.0、webpack@^3.0.0、webpack@~3.0.0</div>
           </a-form-item>
 
-          <a-button
-            class="ml8"
-            type="primary"
-            shape="round"
-            :loading="loading"
-            html-type="submit"
-          >
-            <template #icon><SearchOutlined /></template>
-            搜索
-          </a-button>
+          <a-form-item>
+            <a-button
+              class="ml8"
+              type="primary"
+              shape="round"
+              :loading="loading"
+              html-type="submit"
+            >
+              <template #icon><SearchOutlined /></template>
+              搜索
+            </a-button>
+          </a-form-item>
         </a-input-group>
       </a-form>
 
@@ -55,23 +58,25 @@
         <a-typography-title :level="4" style="font-size: 16px;">搜索结果:</a-typography-title>
         <a-spin :spinning="loading">
           <div class="version-list-wrapper">
-            <template v-if="searchResultVersions && searchResultVersions.length">
-              <ul class="version-list">
-                <li v-for="rs in searchResultVersions" :key="rs.version" class="version-list-item">
-                  <a :href="buildPackagePageUrl(rs)" target="_blank">{{ rs.name }}@{{ rs.version }}</a>
-                  <span class=""> 依赖 </span>
-                  <span target="_blank">{{ rs.targetDependencyName }}@{{ rs.targetDependencyVersion }}</span>
-                  <span class="mr40" />
-                  <a :href="buildPackagePageDepsUrl(rs)" target="_blank">查看{{ rs.name }}@{{ rs.version }}完整依赖信息</a>
-                </li>
-              </ul>
+            <template v-if="searchResultStatus === 'success'">
+              <template v-if="searchResultVersions && searchResultVersions.length">
+                <ul class="version-list">
+                  <li v-for="rs in searchResultVersions" :key="rs.version" class="version-list-item">
+                    <a :href="buildPackagePageUrl(rs)" target="_blank">{{ rs.name }}@{{ rs.version }}</a>
+                    <span class=""> 依赖 </span>
+                    <span>{{ rs.targetDependencyName }}@{{ rs.targetDependencyVersion }}</span>
+                    <span class="mr40" />
+                    <a :href="buildPackagePageDepsUrl(rs)" target="_blank">查看{{ rs.name }}@{{ rs.version }}完整依赖信息</a>
+                  </li>
+                </ul>
+              </template>
+              <template v-else>
+                <a-empty />
+              </template>
             </template>
             <template v-else-if="searchResultStatus === 'error'">
               <a-result :status="searchResultData.status" :title="searchResultData.title" :sub-title="searchResultData.subtitle">
               </a-result>
-            </template>
-            <template v-else>
-              <a-empty />
             </template>
           </div>
         </a-spin>
@@ -158,6 +163,12 @@ export default {
           this.loading = false
         }
       }).catch(()=>{
+        this.searchResultStatus = 'error'
+        this.searchResultData = {
+          status: 'error',
+          title: '404',
+          subtitle: 'Network error'
+        }
         this.loading = false
       })
     },
@@ -188,7 +199,6 @@ export default {
     outline: none;
     cursor: pointer;
     transition: color 0.3s;
-    -webkit-text-decoration-skip: objects;
   }
   .version-list-wrapper{
     height: 500px;
